@@ -30,7 +30,7 @@ public class AMQProducer {
                 try(final MessageProducer producer = session.createProducer(destination)) {
                     for(int count = 0; count < 1_000_000; count ++) {
                         final TextMessage message = session.createTextMessage("Test JMS Message " + UUID.randomUUID().toString());
-                        System.out.println("Sending: " + message.getBody(String.class));
+                        System.out.println("Message body: " + message.getBody(String.class));
                         producer.send(message);
                         Thread.sleep(10l);
                     }
