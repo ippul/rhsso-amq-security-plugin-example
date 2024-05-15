@@ -6,20 +6,21 @@ import java.nio.file.Path;
 import org.ippul.examples.amq.clients.*;
 
 public class Application {
-    
-    private static final String BROKER_URL = "tcp://ex-aao-hdls-svc:61616";
 
     public static void main(String[] args) throws Exception {
         final String worktype = System.getenv("WORK_TYPE");
+        final String brokerURL = System.getenv("BROKER_URL");
+        final String queueName = System.getenv("QUEUE_NAME");
         final String username = Files.readString(Path.of("/etc/secrets/username"));
         final String password = Files.readString(Path.of("/etc/secrets/password"));
+
         switch (worktype) {
             case "PRODUCER":
-                new AMQProducer(BROKER_URL, "queue1", username, password).produce();
+                new AMQProducer(brokerURL, queueName, username, password).produce();
                 System.exit(0);
                 break;
             case "CONSUMER":
-                new AMQConsumer(BROKER_URL, "queue1", username, password).consume();
+                new AMQConsumer(brokerURL, queueName, username, password).consume();
                 System.exit(0);
                 break;
             default:
