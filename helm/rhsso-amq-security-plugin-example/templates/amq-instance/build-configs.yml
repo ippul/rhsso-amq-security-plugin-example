@@ -23,8 +23,8 @@ spec:
   source:
     type: Git
     git:
-      uri: 'https://github.com/ippul/rhsso-amq-security-plugin-example.git'
-    contextDir: /rhsso-amq-security-plugin
+      uri: {{ .Values.amq.build.git.uri }}
+    contextDir: {{ .Values.amq.build.contextDir }}
     configMaps:
       - configMap:
           name: maven-settings

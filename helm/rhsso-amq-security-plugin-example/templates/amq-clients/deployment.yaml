@@ -29,6 +29,10 @@ spec:
           env:
            - name: WORK_TYPE
              value: CONSUMER
+           - name: QUEUE_NAME
+             value: "queue1"
+           - name: BROKER_URL
+             value: "tcp://ex-aao-hdls-svc:61616"
           image: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/amq-clients-example:latest'
           ports:
             - containerPort: 8080
@@ -46,6 +50,10 @@ spec:
           env:
            - name: WORK_TYPE
              value: PRODUCER
+           - name: QUEUE_NAME
+             value: "queue1"
+           - name: BROKER_URL
+             value: "tcp://ex-aao-hdls-svc:61616"
           image: 'image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/amq-clients-example:latest'
           ports:
             - containerPort: 8080

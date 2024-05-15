@@ -12,8 +12,8 @@ metadata:
 spec:
   output:
     to:
-      kind: ImageStreamTag
-      name: 'amq-clients-example:latest'
+      kind: {{ .Values.clients.build.output.to.kind }}
+      name: {{ .Values.clients.build.output.to.name }}
   resources: {}
   successfulBuildsHistoryLimit: 2
   failedBuildsHistoryLimit: 1
@@ -27,8 +27,8 @@ spec:
   source:
     type: Git
     git:
-      uri: 'https://github.com/ippul/amq-rhsso-integration.git'
-    contextDir: /amq-clients-example
+      uri: {{ .Values.clients.build.git.uri }}
+    contextDir: {{ .Values.clients.build.contextDir }}
     configMaps:
       - configMap:
           name: maven-settings
