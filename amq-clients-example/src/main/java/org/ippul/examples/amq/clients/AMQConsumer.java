@@ -32,7 +32,7 @@ public class AMQConsumer {
                     String messageBody = message.getBody(String.class);
                     System.out.println("Message body: " + messageBody);
                     message.acknowledge();
-                    Thread.sleep(1000l);
+                    Thread.sleep(10l);
                 }
             }
         }
