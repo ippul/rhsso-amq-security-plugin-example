@@ -18,7 +18,7 @@
       <dependency>
         <groupId>org.keycloak.bom</groupId>
         <artifactId>keycloak-adapter-bom</artifactId>
-        <version>9.0.12.redhat-00002</version>
+        <version>15.0.4.redhat-00004</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
