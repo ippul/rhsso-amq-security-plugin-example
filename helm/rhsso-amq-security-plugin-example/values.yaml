@@ -5,8 +5,12 @@ amq:
     git:
       uri: 'https://github.com/ippul/rhsso-amq-security-plugin-example.git'
     contextDir: /rhsso-amq-security-plugin
-
-
+    initImage:
+      base:
+        tag: '7.10-38.1675807822'
+    libs:
+      keycloak:
+        version: '15.0.4.redhat-00004'
 
 rhsso:
 
