@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: amq-sso-plugin-config
+data:
+  amq-sso-plugin-config.properties: |-
+    trust.self.signed.certificates: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sso-cli-script
+data:
+  sso-extensions.cli: |-
+    batch
+    /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)
+    /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=record-request-start-time,value=true)
+    /subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern='RemoteHost %h \"%r\" TimeTaken: %D', use-server-log=true)
+    /subsystem=infinispan/cache-container=keycloak/replicated-cache=work/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=clientSessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineClientSessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=loginFailures/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    /subsystem=infinispan/cache-container=keycloak/distributed-cache=actionTokens/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
+    run-batch

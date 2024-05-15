@@ -1,0 +1,48 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: amq-clients-example
+  labels:
+    app: amq-clients-example
+    app.kubernetes.io/component: amq-clients-example
+    app.kubernetes.io/instance: amq-clients-example
+    app.kubernetes.io/name: amq-clients-example
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'amq-clients-example:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 2
+  failedBuildsHistoryLimit: 1
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:openjdk-17-ubi8'
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/ippul/amq-rhsso-integration.git'
+    contextDir: /amq-clients-example
+    configMaps:
+      - configMap:
+          name: maven-settings
+        destinationDir: .
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: amq-clients-example-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: amq-clients-example-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  runPolicy: Serial

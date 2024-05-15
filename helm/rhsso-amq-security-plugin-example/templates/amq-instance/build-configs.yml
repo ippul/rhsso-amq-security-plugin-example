@@ -1,0 +1,95 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: rhsso-amq-security-plugin-example
+  labels:
+    app: rhsso-amq-security-plugin-example
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-11-el7
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'rhsso-amq-security-plugin-example:latest'
+  successfulBuildsHistoryLimit: 2
+  failedBuildsHistoryLimit: 1
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:openjdk-11-el7'
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/ippul/rhsso-amq-security-plugin-example.git'
+    contextDir: /rhsso-amq-security-plugin
+    configMaps:
+      - configMap:
+          name: maven-settings
+        destinationDir: .
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: rhsso-amq-security-plugin-example-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: rhsso-amq-security-plugin-example-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  runPolicy: Serial
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: amq-init
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: amq-init:latest
+  successfulBuildsHistoryLimit: 2
+  failedBuildsHistoryLimit: 1
+  source:
+    dockerfile: |-
+      FROM registry.redhat.io/amq7/amq-broker-init-rhel8:7.10-38.1675807822
+      USER root
+      RUN mkdir -p /amq/scripts/
+      RUN cp /opt/custom/post-config.sh /amq/scripts/post-config.sh
+      ADD ./rhsso-amq-security-plugin-1.0.0.jar /amq/scripts/lib/rhsso-amq-security-plugin-1.0.0.jar
+      RUN curl -o /amq/scripts/lib/keycloak-authz-client-9.0.12.redhat-00002.jar -L https://maven.repository.redhat.com/ga/org/keycloak/keycloak-authz-client/9.0.12.redhat-00002/keycloak-authz-client-9.0.12.redhat-00002.jar
+      RUN ls -lat /amq/scripts/lib/
+      RUN chmod -R 777 /amq/scripts
+      RUN chmod -R 777 /amq/scripts/lib
+    images:
+    - from:
+        kind: ImageStreamTag
+        name: rhsso-amq-security-plugin-example:latest
+      paths:
+      - sourcePath: /deployments/rhsso-amq-security-plugin-1.0.0.jar
+        destinationDir: "."
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'amq-broker-init-rhel8:7.10-38.1675807822'
+      volumes:
+        - name: post-config
+          source:
+            type: ConfigMap
+            configMap:
+              name: post-config
+              defaultMode: 420
+          mounts:
+            - destinationPath: /opt/custom/
+  triggers:
+  - type: ImageChange
+    imageChange:
+      from:
+        kind: "ImageStreamTag"
+        name: "rhsso-amq-security-plugin-example:latest"

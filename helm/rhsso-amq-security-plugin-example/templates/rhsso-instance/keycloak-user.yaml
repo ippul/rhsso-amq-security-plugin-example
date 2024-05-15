@@ -1,0 +1,28 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: {{ .Release.Namespace }}-user
+spec:
+  realmSelector:
+    matchLabels:
+      realm: amq-sso-realm
+  user:
+    lastName: myLastname
+    enabled: true
+    realmRoles:
+      - offline_access
+    clientRoles:
+      account:
+        - manage-account
+      amq-broker:
+        - queue1_admin
+      amq-console:
+        - console_admin
+      realm-management:
+        - manage-users
+    username: ippul
+    firstName: myFirstname
+    credentials:
+      - type: password
+        value: Pa$$w0rd
+    email: ippul@testeamil.com

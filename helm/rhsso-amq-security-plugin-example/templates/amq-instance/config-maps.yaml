@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 'post-config'
+data:
+  post-config.sh: >
+    #!/bin/sh 
+
+    printf '\n' >> "${CONFIG_INSTANCE_DIR}"/etc/artemis.profile 
+
+    echo 'JAVA_ARGS="$JAVA_ARGS -Djavax.net.ssl.trustStore=/amq/extra/configmaps/rhsso-truststore/truststore.jks "' >> ${CONFIG_INSTANCE_DIR}/etc/artemis.profile 
+
+    printf '\n' >> "${CONFIG_INSTANCE_DIR}"/etc/artemis.profile 
+
+    echo 'JAVA_ARGS="$JAVA_ARGS -Djavax.net.ssl.trustStorePassword=password "' >> ${CONFIG_INSTANCE_DIR}/etc/artemis.profile 
+    
+    printf '\n' >> "${CONFIG_INSTANCE_DIR}"/etc/artemis.profile 
+
+    echo 'JAVA_ARGS="$JAVA_ARGS -Djavax.net.ssl.trustStoreType=jks"' >> ${CONFIG_INSTANCE_DIR}/etc/artemis.profile 
+
+    printf '\n' >> "${CONFIG_INSTANCE_DIR}"/etc/artemis.profile 
+    
+    echo 'JAVA_ARGS="$JAVA_ARGS -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n"' >> ${CONFIG_INSTANCE_DIR}/etc/artemis.profile 
+
+    echo "/etc/artemis.profile updated" 
+
+    echo "Adding custom Red Hat SSO security setting plugin."
+
+    sed -i ':a;N;$!ba s|<security-settings>.*</security-settings>|<security-settings>\n         <security-setting-plugin class-name="org.apache.activemq.artemis.security.keycloak.plugin.KeycloakSecuritySettingPlugin"/>\n      </security-settings>|' /amq/init/config/amq-broker/etc/broker.xml
+    
+    # Adding java libraries for RH SSO integration
+    
+    echo "Adding needed java libraries"
+    
+    cp /amq/scripts/lib/* /amq/init/config/amq-broker/lib/
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rhsso-truststore
+binaryData:
+  truststore.jks: > 
+    {{ .Files.Get "truststore/truststore.jks" | b64enc}}

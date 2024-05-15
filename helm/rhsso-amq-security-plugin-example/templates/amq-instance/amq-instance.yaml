@@ -1,0 +1,124 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: ex-aao
+spec:
+  deploymentPlan:
+    extraMounts:
+      configMaps:
+        - amq-sso-plugin-config
+        - rhsso-truststore
+    image: {{ .Values.amq.image }}
+    size: 1
+    requireLogin: true
+    persistenceEnabled: false
+    journalType: nio
+    messageMigration: false
+    jolokiaAgentEnabled: false
+    managementRBACEnabled: true
+    initImage: image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/{{ .Values.amq.initImage }}
+  console:
+    expose: true
+  upgrades:
+    enabled: false
+    minor: false
+  version: 7.10.2
+---
+kind: ActiveMQArtemisSecurity
+apiVersion: broker.amq.io/v1beta1
+metadata:
+  name: amq-rhsso-security
+spec:
+  loginModules:
+    keycloakLoginModules:
+      - configuration:
+          authServerUrl: 'https://keycloak-{{ .Release.Namespace }}.apps-crc.testing/auth'
+          trustStorePassword: password
+          trustStore: /amq/extra/configmaps/rhsso-truststore/truststore.jks
+          verifyTokenAudience: true
+          confidentialPort: 0
+          sslRequired: external
+          resource: amq-broker
+          principalAttribute: preferred_username
+          realm: amq-sso-realm
+          useResourceRoleMappings: true
+          enableBasicAuth: true
+          credentials:
+            - key: secret
+              value: 4393af74-52c9-11ec-bf63-0242ac130002
+          disableTrustManager: true
+        moduleType: directAccess
+        name: rhsso-broker
+      - configuration:
+          authServerUrl: 'https://keycloak-{{ .Release.Namespace }}.apps-crc.testing/auth'
+          trustStorePassword: password
+          trustStore: /amq/extra/configmaps/rhsso-truststore/truststore.jks
+          verifyTokenAudience: true
+          confidentialPort: 0
+          sslRequired: external
+          resource: amq-console
+          principalAttribute: preferred_username
+          realm: amq-sso-realm
+          useResourceRoleMappings: true
+          enableBasicAuth: true
+          publicClient: true
+        moduleType: bearerToken
+        name: rhsso-console
+  securityDomains:
+    brokerDomain:
+      loginModules:
+        - flag: required
+          name: rhsso-broker
+      name: activemq
+    consoleDomain:
+      loginModules:
+        - flag: required
+          name: rhsso-console
+      name: console
+  securitySettings:
+    management:
+      authorisation:
+        allowedList:
+          - domain: hawtio
+        defaultAccess:
+          - method: list*
+            roles:
+              - console_admin
+          - method: get*
+            roles:
+              - console_admin
+          - method: is*
+            roles:
+              - console_admin
+          - method: set*
+            roles:
+              - console_admin
+          - method: '*'
+            roles:
+              - console_admin
+        roleAccess:
+          - accessList:
+              - method: list*
+                roles:
+                  - console_admin
+              - method: get*
+                roles:
+                  - console_admin
+              - method: is*
+                roles:
+                  - console_admin
+              - method: set*
+                roles:
+                  - console_admin
+              - method: browse*
+                roles:
+                  - console_admin
+              - method: count*
+                roles:
+                  - console_admin
+              - method: '*'
+                roles:
+                  - console_admin
+            domain: org.apache.activemq.artemis
+      hawtioRoles:
+        - console_admin

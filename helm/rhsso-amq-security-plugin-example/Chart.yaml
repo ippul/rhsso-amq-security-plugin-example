@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rhsso-amq-security-plugin-example
+description: Example of custom RHSSO security plugin for AMQ
+
+type: application
+
+version: 1.0.0

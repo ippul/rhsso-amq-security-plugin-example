@@ -1,0 +1,23 @@
+approveManualInstallPlanViaHook: true
+
+installPlanApproverAndVerifyJobsImage: 'quay.io/openshift/origin-cli:4.12'
+
+operators:
+  - channel: 'stable'
+    installPlanApproval: 'Manual'
+    name: 'rhsso-operator'
+    source: 'redhat-operators'
+    sourceNamespace: 'openshift-marketplace'
+    csv: 'rhsso-operator.7.6.1-opr-005'
+
+  - namespace: 'openshift-operators'
+    channel: '7.10.x'
+    installPlanApproval: 'Manual'
+    name: 'amq-broker-rhel8'
+    source: 'redhat-operators'
+    sourceNamespace: 'openshift-marketplace'
+    csv: 'amq-broker-operator.v7.10.2-opr-2-0.1680622941.p'
+
+operatorGroups:
+  - createNamespace: false
+    targetOwnNamespace: true
