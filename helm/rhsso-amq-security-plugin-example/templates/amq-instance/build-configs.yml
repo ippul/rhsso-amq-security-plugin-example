@@ -24,6 +24,7 @@ spec:
     type: Git
     git:
       uri: {{ .Values.amq.build.git.uri }}
+      ref: {{ .Values.amq.build.git.ref }}
     contextDir: {{ .Values.amq.build.contextDir }}
     configMaps:
       - configMap:
@@ -56,12 +57,12 @@ spec:
   failedBuildsHistoryLimit: 1
   source:
     dockerfile: |-
-      FROM registry.redhat.io/amq7/amq-broker-init-rhel8:7.10-38.1675807822
+      FROM registry.redhat.io/amq7/amq-broker-init-rhel8:{{ .Values.amq.build.initImage.base.tag }}
       USER root
       RUN mkdir -p /amq/scripts/
       RUN cp /opt/custom/post-config.sh /amq/scripts/post-config.sh
       ADD ./rhsso-amq-security-plugin-1.0.0.jar /amq/scripts/lib/rhsso-amq-security-plugin-1.0.0.jar
-      RUN curl -o /amq/scripts/lib/keycloak-authz-client-9.0.12.redhat-00002.jar -L https://maven.repository.redhat.com/ga/org/keycloak/keycloak-authz-client/9.0.12.redhat-00002/keycloak-authz-client-9.0.12.redhat-00002.jar
+      RUN curl -o /amq/scripts/lib/keycloak-authz-client-{{ .Values.amq.build.libs.keycloak.version }}.jar -L https://maven.repository.redhat.com/ga/org/keycloak/keycloak-authz-client/{{ .Values.amq.build.libs.keycloak.version }}/keycloak-authz-client-{{ .Values.amq.build.libs.keycloak.version }}.jar
       RUN ls -lat /amq/scripts/lib/
       RUN chmod -R 777 /amq/scripts
       RUN chmod -R 777 /amq/scripts/lib
@@ -77,7 +78,7 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'amq-broker-init-rhel8:7.10-38.1675807822'
+        name: 'amq-broker-init-rhel8:{{ .Values.amq.build.initImage.base.tag }}'
       volumes:
         - name: post-config
           source:

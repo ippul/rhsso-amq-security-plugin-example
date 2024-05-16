@@ -15,7 +15,7 @@ data:
     batch
     /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=record-request-start-time,value=true)
     /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=record-request-start-time,value=true)
-    /subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern='RemoteHost %h \"%r\" TimeTaken: %D', use-server-log=true)
+    /subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern='RemoteHost %h \"%r\" TimeTaken: %D StatusCode: %s User: %u Method: %m', use-server-log=true)
     /subsystem=infinispan/cache-container=keycloak/replicated-cache=work/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
     /subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)
     /subsystem=infinispan/cache-container=keycloak/distributed-cache=clientSessions/component=expiration/:write-attribute(name=lifespan,value=2000000000000)

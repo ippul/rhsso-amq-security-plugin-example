@@ -28,6 +28,7 @@ spec:
     type: Git
     git:
       uri: {{ .Values.clients.build.git.uri }}
+      ref: {{ .Values.clients.build.git.ref }}
     contextDir: {{ .Values.clients.build.contextDir }}
     configMaps:
       - configMap:

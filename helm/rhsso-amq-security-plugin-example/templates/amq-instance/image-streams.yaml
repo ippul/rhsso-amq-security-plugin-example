@@ -15,11 +15,11 @@ spec:
       importPolicy: {}
       referencePolicy:
         type: Source
-    - name: 7.10-38.1675807822
+    - name: {{ .Values.amq.build.initImage.base.tag }}
       annotations: null
       from:
         kind: DockerImage
-        name: 'registry.redhat.io/amq7/amq-broker-init-rhel8:7.10-38.1675807822'
+        name: 'registry.redhat.io/amq7/amq-broker-init-rhel8:{{ .Values.amq.build.initImage.base.tag }}'
       generation: 1
       importPolicy: {}
       referencePolicy:

@@ -40,4 +40,4 @@ metadata:
   name: rhsso-truststore
 binaryData:
   truststore.jks: > 
-    {{ .Files.Get "truststore/truststore.jks" | b64enc}}
+    {{ .Files.Get "truststore/truststore.jks" | b64enc }}
