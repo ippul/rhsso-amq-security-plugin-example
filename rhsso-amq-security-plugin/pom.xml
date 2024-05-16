@@ -9,7 +9,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.6.0</junit.version>
     <version.server.bom>7.4.0.GA</version.server.bom>
-    <version.org.keycloak>12.0.3</version.org.keycloak>
     <version.org.apache.httpcomponents>4.5.13</version.org.apache.httpcomponents>
   </properties>
 
@@ -18,7 +17,7 @@
       <dependency>
         <groupId>org.keycloak.bom</groupId>
         <artifactId>keycloak-adapter-bom</artifactId>
-        <version>15.0.4.redhat-00004</version>
+        <version>18.0.11.redhat-00004</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -48,7 +47,7 @@
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-admin-client</artifactId>
-      <version>9.0.12.redhat-00002</version>
+      <version>18.0.11.redhat-00004</version>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
