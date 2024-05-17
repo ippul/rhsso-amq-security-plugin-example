@@ -28,6 +28,8 @@ data:
 
     sed -i ':a;N;$!ba s|<security-settings>.*</security-settings>|<security-settings>\n         <security-setting-plugin class-name="org.apache.activemq.artemis.security.keycloak.plugin.KeycloakSecuritySettingPlugin"/>\n      </security-settings>|' /amq/init/config/amq-broker/etc/broker.xml
     
+    cat /amq/init/config/amq-broker/etc/bootstrap.xml
+
     # Adding java libraries for RH SSO integration
     
     echo "Adding needed java libraries"

@@ -1,29 +1,35 @@
-## Configurations
+# Branch features/upgrades/amq-operator/7.11.6/broker/7.10.2
 
-### Branch features/upgrades/amq-operator/7.11.6/broker/7.10.2
+## Current branch configuration
 | Component      | Name             | Version                           |
 |----------------|------------------|-----------------------------------|
 | RHSSO operator | rhsso-operator   | rhsso-operator.7.6.8-opr-001      |
 | AMQ operator   | amq-broker-rhel8 | amq-broker-operator.v7.11.6-opr-2 |
 | AMQ broker     | amq-broker       | 7.11.6(init image 7.11.6-3)       |
 
-## Install
+## Install operators
+```
+helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
+helm --debug upgrade --install -f ./helm/operators-values-rhamq.yaml example-operators redhat-cop/operators-installer
+helm --debug upgrade --install -f ./helm/operators-values-rhsso.yaml example-operators redhat-cop/operators-installer --namespace=example-security-plugin --create-namespace
+helm --debug upgrade --install -f ./helm/operators-values-rhsso.yaml example-operators redhat-cop/operators-installer --namespace=example-plain-integration --create-namespace
+```
+
+## Create the trust store
 ```
 oc extract secret/router-certs-default -n openshift-ingress --keys=tls.crt --to=/tmp --confirm
+rm helm/rhsso-amq-plain-example/truststore/truststore.jks
 rm helm/rhsso-amq-security-plugin-example/truststore/truststore.jks
+keytool -import -noprompt -file /tmp/tls.crt -alias .apps-crc.testing -keystore ./helm/rhsso-amq-plain-example/truststore/truststore.jks -storepass password
 keytool -import -noprompt -file /tmp/tls.crt -alias .apps-crc.testing -keystore ./helm/rhsso-amq-security-plugin-example/truststore/truststore.jks -storepass password
-helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
-helm --debug upgrade --install -f ./helm/operators-values.yaml example-operators redhat-cop/operators-installer --namespace=example --create-namespace
-helm --debug upgrade --install rhsso-amq-security-plugin-example ./helm/rhsso-amq-security-plugin-example/ --namespace example --create-namespace
 ```
 
-## Check installation
-
+## Install plain integration 
 ```
-oc project example
-helm list 
+helm --debug upgrade --install rhsso-amq-plain-example ./helm/rhsso-amq-plain-example/ --namespace example-plain-integration --create-namespace
+```
 
-NAME                                NAMESPACE   REVISION    UPDATED                                 STATUS      CHART
-example-operators                   example     2           2024-05-15 16:44:23.213470039 +0100 BST deployed    operators-installer-2.4.3
-rhsso-amq-security-plugin-example   example     1           2024-05-15 16:46:20.484940498 +0100 BST deployed    rhsso-amq-security-plugin-example-1.0.0
+## Install with security plugin
+```
+helm --debug upgrade --install rhsso-amq-security-plugin-example ./helm/rhsso-amq-security-plugin-example/ --namespace example-security-plugin --create-namespace
 ```

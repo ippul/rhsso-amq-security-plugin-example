@@ -22,6 +22,7 @@ spec:
   upgrades:
     enabled: false
     minor: false
+  version: 7.11.6
 ---
 kind: ActiveMQArtemisSecurity
 apiVersion: broker.amq.io/v1beta1
@@ -63,8 +64,6 @@ spec:
           publicClient: true
         moduleType: bearerToken
         name: rhsso-console
-    propertiesLoginModules:
-      - name: prop-module
   securityDomains:
     brokerDomain:
       loginModules:
@@ -77,11 +76,67 @@ spec:
         - flag: sufficient
           debug: true
           name: rhsso-console
-        - debug: true
-          flag: required
-          name: prop-module
       name: console
   securitySettings:
+    broker:
+      - match: '#'
+        permissions:
+        - operationType: createAddress
+          roles:
+          - admin
+          - consumer
+          - producer
+        - operationType: deleteAddress
+          roles:
+          - admin
+        - operationType: createDurableQueue
+          roles:
+          - admin
+          - consumer
+          - producer
+        - operationType: deleteDurableQueue
+          roles:
+          - admin
+        - operationType: createNonDurableQueue
+          roles:
+          - admin
+          - consumer
+          - producer
+        - operationType: deleteNonDurableQueue
+          roles:
+          - admin
+        - operationType: send
+          roles:
+          - admin
+          - consumer
+          - producer
+        - operationType: consume
+          roles:
+          - admin
+          - consumer
+          - producer
+        - operationType: browse
+          roles:
+          - admin
+          - consumer
+          - producer
+      - match: 'activemq.management.#'
+        permissions:
+        - operationType: 'createNonDurableQueue'
+          roles:
+          - 'admin'
+        - operationType: 'createAddress'
+          roles:
+          - 'admin'
+        - operationType: 'consume'
+          roles:
+          - 'admin'
+        - operationType: 'manage'
+          roles:
+          - 'admin'
+        - operationType: 'send'
+          roles:
+          - 'admin'
     management:
       authorisation:
         allowedList:

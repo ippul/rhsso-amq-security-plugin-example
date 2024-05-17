@@ -10,15 +10,7 @@ spec:
       - uma_protection
   client:
     defaultClientScopes:
-    - email
-    - profile
-    - roles
-    - web-origins
-    optionalClientScopes:
-    - address
-    - microprofile-jwt
-    - offline_access
-    - phone
+      - roles
     enabled: true
     clientAuthenticatorType: client-secret
     clientId: amq-broker
@@ -103,15 +95,15 @@ spec:
       - 'http://ex-aao-wconsj-0-svc-rte-{{ .Release.Namespace }}.apps-crc.testing/*'
     clientId: amq-console
     name: amq-console
-    protocol: openid-connect
+    implicitFlowEnabled: false
     publicClient: true
     standardFlowEnabled: true
-    directAccessGrantsEnabled: false
-    serviceAccountsEnabled: false
+    publicClient: true
+    protocol: openid-connect
     webOrigins:
       - '+'
-    defaultRoles:
-      - console_admin
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
     defaultClientScopes:
       - acr
       - email
@@ -125,7 +117,7 @@ spec:
       - phone
   realmSelector:
     matchLabels:
-      app: sso
+      realm: amq-sso-realm
   roles:
     - name: console_admin
   scopeMappings: {}

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rhsso-amq-plain-example
+description: Example of RHSSO-AMQ integration
+
+type: application
+
+version: 1.0.0

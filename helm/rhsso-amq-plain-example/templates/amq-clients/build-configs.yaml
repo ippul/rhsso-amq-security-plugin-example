@@ -1,0 +1,49 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: amq-clients-example
+  labels:
+    app: amq-clients-example
+    app.kubernetes.io/component: amq-clients-example
+    app.kubernetes.io/instance: amq-clients-example
+    app.kubernetes.io/name: amq-clients-example
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  output:
+    to:
+      kind: {{ .Values.clients.build.output.to.kind }}
+      name: {{ .Values.clients.build.output.to.name }}
+  resources: {}
+  successfulBuildsHistoryLimit: 2
+  failedBuildsHistoryLimit: 1
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:openjdk-17-ubi8'
+  source:
+    type: Git
+    git:
+      uri: {{ .Values.clients.build.git.uri }}
+      ref: {{ .Values.clients.build.git.ref }}
+    contextDir: {{ .Values.clients.build.contextDir }}
+    configMaps:
+      - configMap:
+          name: maven-settings
+        destinationDir: .
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: amq-clients-example-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: amq-clients-example-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  runPolicy: Serial
