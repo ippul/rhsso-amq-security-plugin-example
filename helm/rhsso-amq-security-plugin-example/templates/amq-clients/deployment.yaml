@@ -23,7 +23,7 @@ spec:
       volumes:
       - name: ippul-secret
         secret:
-          secretName: credential-amq-sso-realm-ippul-example
+          secretName: credential-amq-sso-realm-ippul-{{.Release.Namespace }}
       containers:
         - name: amq-consumer
           env:
