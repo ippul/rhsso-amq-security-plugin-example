@@ -89,19 +89,32 @@ metadata:
   labels:
     app: sso
 spec:
-spec:
   client:
     enabled: true
     redirectUris:
-      - 'http://ex-aao-wconsj-0-svc-rte-example-1.apps-crc.testing/*'
+      - 'http://ex-aao-wconsj-0-svc-rte-{{ .Release.Namespace }}.apps-crc.testing/*'
     clientId: amq-console
     name: amq-console
     implicitFlowEnabled: false
     publicClient: true
     standardFlowEnabled: true
+    publicClient: true
+    protocol: openid-connect
     webOrigins:
-      - +
+      - '+'
     directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    defaultClientScopes:
+      - acr
+      - email
+      - profile
+      - roles
+      - web-origins
+    optionalClientScopes:
+      - address
+      - microprofile-jwt
+      - offline_access
+      - phone
   realmSelector:
     matchLabels:
       realm: amq-sso-realm

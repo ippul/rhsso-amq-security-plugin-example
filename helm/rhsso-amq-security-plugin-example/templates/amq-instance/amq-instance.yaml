@@ -14,7 +14,7 @@ spec:
     persistenceEnabled: false
     journalType: nio
     messageMigration: false
-    jolokiaAgentEnabled: false
+    jolokiaAgentEnabled: true
     managementRBACEnabled: true
     initImage: image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/{{ .Values.amq.initImage }}
   console:
@@ -53,7 +53,7 @@ spec:
           authServerUrl: 'https://keycloak-{{ .Release.Namespace }}.apps-crc.testing/auth'
           trustStorePassword: password
           trustStore: /amq/extra/configmaps/rhsso-truststore/truststore.jks
-          verifyTokenAudience: true
+          verifyTokenAudience: false
           confidentialPort: 0
           sslRequired: external
           resource: amq-console
@@ -68,11 +68,13 @@ spec:
     brokerDomain:
       loginModules:
         - flag: required
+          debug: true
           name: rhsso-broker
       name: activemq
     consoleDomain:
       loginModules:
-        - flag: required
+        - flag: sufficient
+          debug: true
           name: rhsso-console
       name: console
   securitySettings:

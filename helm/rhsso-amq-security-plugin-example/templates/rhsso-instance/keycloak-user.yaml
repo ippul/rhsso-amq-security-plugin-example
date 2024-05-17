@@ -7,7 +7,7 @@ spec:
     matchLabels:
       realm: amq-sso-realm
   user:
-    lastName: myLastname
+    lastName: Luppi
     enabled: true
     realmRoles:
       - offline_access
@@ -21,7 +21,7 @@ spec:
       realm-management:
         - manage-users
     username: ippul
-    firstName: myFirstname
+    firstName: Claudio
     credentials:
       - type: password
         value: Pa$$w0rd
