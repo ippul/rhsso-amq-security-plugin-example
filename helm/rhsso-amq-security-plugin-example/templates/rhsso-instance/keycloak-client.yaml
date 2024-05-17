@@ -30,50 +30,50 @@ spec:
       resources:
         - attributes:
             deleteDurableQueue:
-              "queue1_admin"
+              "admin,queue1_admin"
             manage:
-              "queue1_admin"
+              "admin,queue1_admin"
             createNonDurableQueue:
-              "queue1_admin"
+              "admin,queue1_admin"
             send:
-              "queue1_admin"
+              "admin,queue1_admin"
             deleteAddress:
-              "queue1_admin"
+              "admin,queue1_admin"
             browse:
-              "queue1_admin"
+              "admin,queue1_admin"
             createDurableQueue:
-              "queue1_admin"
+              "admin,queue1_admin"
             deleteNonDurableQueue:
-              "queue1_admin"
+              "admin,queue1_admin"
             createAddress:
-              "queue1_admin"
+              "admin,queue1_admin"
             consume:
-              "queue1_admin"
+              "admin,queue1_admin"
           displayName: jms.queue.queue1
           name: jms.queue.queue1
           ownerManagedAccess: false
           type: AMQ_DESTINATION
         - attributes:
             deleteDurableQueue:
-              "queue2_admin"
+              "admin,queue2_admin"
             manage:
-              "queue2_admin"
+              "admin,queue2_admin"
             createNonDurableQueue:
-              "queue2_admin"
+              "admin,queue2_admin"
             send:
-              "queue2_admin"
+              "admin,queue2_admin"
             deleteAddress:
-              "queue2_admin"
+              "admin,queue2_admin"
             browse:
-              "queue2_admin"
+              "admin,queue2_admin"
             createDurableQueue:
-              "queue2_admin"
+              "admin,queue2_admin"
             deleteNonDurableQueue:
-              "queue2_admin"
+              "admin,queue2_admin"
             createAddress:
-              "queue2_admin"
+              "admin,queue2_admin"
             consume:
-              "queue2_admin"
+              "admin,queue2_admin"
           displayName: jms.queue.queue2
           name: jms.queue.queue2
           ownerManagedAccess: false
