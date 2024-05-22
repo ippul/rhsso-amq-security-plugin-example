@@ -30,52 +30,27 @@ spec:
       resources:
         - attributes:
             deleteDurableQueue:
-              "admin,queue1_admin"
+              "queue1_admin"
             manage:
-              "admin,queue1_admin"
+              "queue1_admin"
             createNonDurableQueue:
-              "admin,queue1_admin"
+              "queue1_admin"
             send:
-              "admin,queue1_admin"
+              "queue1_admin"
             deleteAddress:
-              "admin,queue1_admin"
+              "queue1_admin"
             browse:
-              "admin,queue1_admin"
+              "queue1_admin"
             createDurableQueue:
-              "admin,queue1_admin"
+              "queue1_admin"
             deleteNonDurableQueue:
-              "admin,queue1_admin"
+              "queue1_admin"
             createAddress:
-              "admin,queue1_admin"
+              "queue1_admin"
             consume:
-              "admin,queue1_admin"
+              "queue1_admin"
           displayName: jms.queue.queue1
           name: jms.queue.queue1
-          ownerManagedAccess: false
-          type: AMQ_DESTINATION
-        - attributes:
-            deleteDurableQueue:
-              "admin,queue2_admin"
-            manage:
-              "admin,queue2_admin"
-            createNonDurableQueue:
-              "admin,queue2_admin"
-            send:
-              "admin,queue2_admin"
-            deleteAddress:
-              "admin,queue2_admin"
-            browse:
-              "admin,queue2_admin"
-            createDurableQueue:
-              "admin,queue2_admin"
-            deleteNonDurableQueue:
-              "admin,queue2_admin"
-            createAddress:
-              "admin,queue2_admin"
-            consume:
-              "admin,queue2_admin"
-          displayName: jms.queue.queue2
-          name: jms.queue.queue2
           ownerManagedAccess: false
           type: AMQ_DESTINATION
     directAccessGrantsEnabled: true
@@ -85,7 +60,6 @@ spec:
     secret: 4393af74-52c9-11ec-bf63-0242ac130002
   roles:
     - name: queue1_admin
-    - name: queue2_admin
   realmSelector:
      matchLabels:
       realm: amq-sso-realm

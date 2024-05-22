@@ -10,23 +10,14 @@
 ## Install operators
 ```
 helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
-helm --debug upgrade --install -f ./helm/operators-values-rhamq.yaml example-operators redhat-cop/operators-installer
 helm --debug upgrade --install -f ./helm/operators-values-rhsso.yaml example-operators redhat-cop/operators-installer --namespace=example-security-plugin --create-namespace
-helm --debug upgrade --install -f ./helm/operators-values-rhsso.yaml example-operators redhat-cop/operators-installer --namespace=example-plain-integration --create-namespace
 ```
 
 ## Create the trust store
 ```
 oc extract secret/router-certs-default -n openshift-ingress --keys=tls.crt --to=/tmp --confirm
-rm helm/rhsso-amq-plain-example/truststore/truststore.jks
 rm helm/rhsso-amq-security-plugin-example/truststore/truststore.jks
-keytool -import -noprompt -file /tmp/tls.crt -alias .apps-crc.testing -keystore ./helm/rhsso-amq-plain-example/truststore/truststore.jks -storepass password
 keytool -import -noprompt -file /tmp/tls.crt -alias .apps-crc.testing -keystore ./helm/rhsso-amq-security-plugin-example/truststore/truststore.jks -storepass password
-```
-
-## Install plain integration 
-```
-helm --debug upgrade --install rhsso-amq-plain-example ./helm/rhsso-amq-plain-example/ --namespace example-plain-integration --create-namespace
 ```
 
 ## Install with security plugin
