@@ -64,6 +64,8 @@ spec:
           publicClient: true
         moduleType: bearerToken
         name: rhsso-console
+    propertiesLoginModules:
+      - name: prop-module
   securityDomains:
     brokerDomain:
       loginModules:
@@ -76,6 +78,9 @@ spec:
         - flag: sufficient
           debug: true
           name: rhsso-console
+        - debug: true
+          flag: required
+          name: prop-module
       name: console
   securitySettings:
     broker:

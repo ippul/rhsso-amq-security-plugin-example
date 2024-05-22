@@ -10,6 +10,12 @@ operators:
   source: 'redhat-operators'
   sourceNamespace: 'openshift-marketplace'
   csv: 'amq-broker-operator.v7.11.6-opr-2'
+- channel: 'stable'
+  installPlanApproval: 'Manual'
+  name: 'rhsso-operator'
+  source: 'redhat-operators'
+  sourceNamespace: 'openshift-marketplace'
+  csv: 'rhsso-operator.7.6.8-opr-001'
 
 operatorGroups:
 - createNamespace: false
