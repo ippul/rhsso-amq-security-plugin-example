@@ -41,13 +41,13 @@ public class KeycloakSecuritySettingPlugin implements SecuritySettingPlugin {
         scheduledFuture = scheduler.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                LOGGER.debug("Start Keycloak security settings data refresh");
+                LOGGER.info("Start Keycloak security settings data refresh");
                 try {
                     redHatSSOUtils.checkAndApplyConfigurationsUpdate(securityRepository);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                LOGGER.debug("End Keycloak security settings data refresh");
+                LOGGER.info("End Keycloak security settings data refresh");
             }
         }, configurationRefreshStartDelay, configurationRefreshInterval, TimeUnit.SECONDS);
         return this;

@@ -69,6 +69,6 @@ public class KeycloakSecurityManager extends ActiveMQJAASSecurityManager impleme
    @Override
    public void propertyChange(PropertyChangeEvent event) {
       this.destinationNamesResolver = (HierarchicalRepository<DestinationNameKey>) event.getNewValue();
-      LOGGER.debug("Applied new configuration of Destination");
+      LOGGER.info("Applied new configuration of Destination");
    }
 }

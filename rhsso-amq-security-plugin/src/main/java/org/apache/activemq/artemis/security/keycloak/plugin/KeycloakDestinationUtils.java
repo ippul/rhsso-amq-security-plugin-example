@@ -62,7 +62,7 @@ public class KeycloakDestinationUtils {
             anyChange = Boolean.TRUE;
         }
         if(anyChange) {
-            LOGGER.debug("Destination security settings changed send notification to KeycloakSecurityManager");
+            LOGGER.info("Destination security settings changed send notification to KeycloakSecurityManager");
             KeycloakResourcesUtils.getInstance().notifyKeycloakSecurityManagers();
         }
     }
